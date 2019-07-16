@@ -117,7 +117,7 @@ export class AmexioD3BaseLineComponent extends AmexioD3BaseChartComponent {
             .attr('viewBox', '0 0 ' + this.svgwidth + ' ' + this.svgheight);
         this.svg.selectAll("*").remove();
 
-        const margin = { top: 40, right: 20, bottom: 30, left: 40 };
+        const margin = { top: 40, right: 20, bottom: 50, left: 40 };
         //RESIZE STEP 2 ENDS HERE
         const width = +this.svgwidth - margin.left - margin.right;
         const height = +this.svgheight - margin.top - margin.bottom;
@@ -131,9 +131,16 @@ export class AmexioD3BaseLineComponent extends AmexioD3BaseChartComponent {
         const y = d3.scaleLinear()
             .rangeRound([height, 0]);
         if (this.xaxisdata) {
+			
+			//if(this._data[0].datatype==="string"){
+				x.domain(this.xaxisdata.map((d) => {
+					return d.label
+				}));
+			/*}else{
             x.domain(this.xaxisdata.map((d) => {
                 return parseInt(d.label)
             }));
+			}*/
         }
         if (this.yaxisdata) {
             y.domain([0, d3.max(this.yaxisdata, (d) => { return d.value; })]);
@@ -143,32 +150,40 @@ export class AmexioD3BaseLineComponent extends AmexioD3BaseChartComponent {
             if (this.svgwidth <= 400) {
                 g.append("g")
                     .attr("transform", "translate(0," + height + ")")
-                    .call(d3.axisBottom(x).ticks(this.xtickscount)).
-                    selectAll("text")
+                    .call(d3.axisBottom(x).ticks(this.xtickscount))
+					.selectAll("text")
                     .attr("y", 0)
                     .attr("x", 9)
-                    .attr("dy", ".35em")
-                    .attr("transform", "rotate(60)")
-                    .style("text-anchor", "start");
+                    .attr("dx", "-.8em")
+					.attr("dy", ".15em")
+					.style("text-anchor", "end") 
+					.attr("transform", "rotate(-60)");
+						
             }
             else {
                 g.append("g")
                     .attr("transform", "translate(0," + height + ")")
                     //   .attr("color", "grey")
                     .call(d3.axisBottom(x).ticks(this.xtickscount))
+					.selectAll("text")
+					.attr("dx", "-.8em")
+					.attr("dy", ".15em")
+					.style("text-anchor", "end") 
+					.attr("transform", "rotate(-60)");
             }
         }
         else {
             g.append("g")
                 .attr("transform", "translate(0," + height + ")")
                 //   .attr("color", "grey")
-                .call(d3.axisBottom(x).ticks(this.xtickscount)).
-                selectAll("text")
+                .call(d3.axisBottom(x).ticks(this.xtickscount))
+				.selectAll("text")
                 .attr("y", 0)
                 .attr("x", 9)
-                .attr("dy", ".35em")
-                .attr("transform", "rotate(60)")
-                .style("text-anchor", "start");
+               .attr("dx", "-.8em")
+				.attr("dy", ".15em")
+                .style("text-anchor", "end") 
+				.attr("transform", "rotate(-60)");
         }
 
         g.append("g")
